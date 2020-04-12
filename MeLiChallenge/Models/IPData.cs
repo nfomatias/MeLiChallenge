@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MeLiChallenge.Entities
+namespace MeLiChallenge.Models
 {
-    public class IP
+    public class IPData
     {
         public string CountryCode { get; set; }
         public string CountryCode3 { get; set; }

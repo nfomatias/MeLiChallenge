@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MeLiChallenge.Services;
+using MeLiChallenge.Services.Externals;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,18 +29,18 @@ namespace MeLiChallenge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-#if DEBUG
-            var redis = ConnectionMultiplexer.Connect("localhost:6379");
-#endif
-#if RELEASE
-            var redis = ConnectionMultiplexer.Connect("redis:6379");
-#endif
-            services.AddScoped<IDatabase>(s => redis.GetDatabase());
 
-            services.AddTransient<IIPInfoService, IPInfoService>();
+            string connectionString= Configuration.GetValue<string>(key: SettingKeys.RedisConnection ); //"redis:6379";
+
+            services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(connectionString));
+
+            services.AddSingleton<ICacheService, RedisCacheService>();
+
+            services.AddTransient<IIPGurardService, IPGuardService>();
             services.AddTransient<IIPService, IPService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IExchangeService, ExchangeService>();
+            services.AddSingleton<IReferenceCountryService, ReferenceCountryService>();
 
         }
 

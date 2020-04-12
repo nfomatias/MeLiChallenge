@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MeLiChallenge.Services;
+using MeLiChallenge.Services.Externals;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeLiChallenge.Controllers
@@ -8,18 +8,18 @@ namespace MeLiChallenge.Controllers
     [ApiController]
     public class IPInfoController : ControllerBase
     {
-        private IIPInfoService _ipInfoApp;
+        private IIPGurardService _ipGuardService;
 
-        public IPInfoController(IIPInfoService ipInfoApp)
+        public IPInfoController(IIPGurardService ipGuardService)
         {
-            _ipInfoApp = ipInfoApp;
+            _ipGuardService = ipGuardService;
         }
 
         // GET: api/IPInfo/5
         [HttpGet("{ipaddress}", Name = "Get")]
         public async Task<IActionResult> Get(string ipaddress)
         {
-            var result = await _ipInfoApp.GetIPInfo(ipaddress);
+            var result = await _ipGuardService.GetCountry(ipaddress);
             return Ok(result);
         }
     }

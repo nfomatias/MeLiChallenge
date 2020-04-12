@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MeLiChallenge.Entities
+namespace MeLiChallenge.Models
 {
-    public class Currency
+    public class CurrencyData
     {
         public string Code { get; set; }
         public string Name { get; set; }
