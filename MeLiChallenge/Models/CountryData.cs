@@ -8,12 +8,14 @@ namespace MeLiChallenge.Models
     {
         public string Name { get; set; }
 
-        public IEnumerable<decimal> Latlng { get; set; }
+        public IEnumerable<double> Latlng { get; set; }
 
         public IEnumerable<CurrencyData> Currencies { get; set; }
 
         public string Alpha2Code { get; set; }
 
         public IEnumerable<string> Timezones { get; set; }
+
+        public IEnumerable<LanguageData> Languages { get; set; }
     }
 }
