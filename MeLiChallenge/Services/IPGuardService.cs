@@ -12,14 +12,16 @@ namespace MeLiChallenge.Services
 {
     public class IPGuardService : IIPGurardService
     {
+        ICacheService _cacheService;
         IIPService _ipService;
         ICountryService _countryService;
         IExchangeService _exchangeService;
         IReferenceCountryService _referenceCountryService;
         IConfiguration _configuration;
 
-        public IPGuardService(IIPService ipService, ICountryService countryService, IExchangeService exchangeService, IReferenceCountryService referenceCountryService, IConfiguration configuration)
+        public IPGuardService(ICacheService cacheService, IIPService ipService, ICountryService countryService, IExchangeService exchangeService, IReferenceCountryService referenceCountryService, IConfiguration configuration)
         {
+            _cacheService = cacheService;
             _ipService = ipService;
             _countryService = countryService;
             _exchangeService = exchangeService;
@@ -29,21 +31,64 @@ namespace MeLiChallenge.Services
 
         public async Task<Country> GetCountry(string ipAddress)
         {
-            var ipData = _ipService.GetIpData(ipAddress).Result;
+            var ipData = GetIpData(ipAddress);
 
-            var countryData = _countryService.GetCountryData(ipData.CountryCode).Result;
+            var countryData = GetCountryData(ipData);
 
-            var exchangeData = _exchangeService.GetExchangeData(countryData.Currencies.FirstOrDefault().Code).Result;
+            var exchangeData = GetExchangeData(countryData);
 
             var currency = new Currency(exchangeData, countryData, _configuration.GetValue<string>(key: SettingKeys.BaseCurrency));
 
-
             var referenceCountry = _referenceCountryService.GetReferenceCountry();
-
 
             var Country = new Country(countryData, currency, referenceCountry.Lat, referenceCountry.Lng);
 
             return Country;
+        }
+
+        private ExchangeData GetExchangeData(CountryData countryData)
+        {
+            var currencyCode = countryData.Currencies.FirstOrDefault().Code;
+
+            var retVal = _cacheService.GetCacheValueAsync<ExchangeData>(currencyCode).Result;
+
+            var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesExchange);
+
+            if(retVal == null)
+            {
+                retVal = _exchangeService.GetExchangeData(currencyCode).Result;
+                _cacheService.SetCacheValueAsync<ExchangeData>(currencyCode, retVal, new TimeSpan(0, ttl, 0));
+            }
+
+            return retVal;
+        }
+
+        private IPData GetIpData(string ipAddress)
+        {
+            var retVal = _cacheService.GetCacheValueAsync<IPData>(ipAddress).Result;
+
+            var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesIP);
+
+            if(retVal == null)
+            {
+                retVal = _ipService.GetIpData(ipAddress).Result;
+                _cacheService.SetCacheValueAsync<IPData>(ipAddress, retVal, new TimeSpan(0, ttl, 0));
+            }
+
+            return retVal;
+        }
+
+        private CountryData GetCountryData(IPData ipData)
+        {
+            var retVal = _cacheService.GetCacheValueAsync<CountryData>(ipData.CountryCode).Result;
+
+            if (retVal == null)
+            {
+                retVal = _countryService.GetCountryData(ipData.CountryCode).Result;
+                _cacheService.SetCacheValueAsync(ipData.CountryCode, retVal);
+            }
+
+            return retVal;
         }
     }
 }

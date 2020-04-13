@@ -10,5 +10,7 @@ namespace MeLiChallenge.Services
         Task<T> GetCacheValueAsync<T>(string key);
 
         Task SetCacheValueAsync<T>(string key, T value);
+
+        Task SetCacheValueAsync<T>(string key, T value, TimeSpan ttl);
     }
 }

@@ -21,13 +21,19 @@ namespace MeLiChallenge.Services
             var db = _connectionMultiplexer.GetDatabase();
             var result = await db.StringGetAsync(key);
 
-            return JsonConvert.DeserializeObject<T>(result.ToString());
+            return result.IsNull? default : JsonConvert.DeserializeObject<T>(result.ToString());
         }
 
         public async Task SetCacheValueAsync<T>(string key, T value)
         {
             var db = _connectionMultiplexer.GetDatabase();
             await db.StringSetAsync(key, JsonConvert.SerializeObject(value));
+        }
+
+        public async Task SetCacheValueAsync<T>(string key, T value, TimeSpan ttl)
+        {
+            var db = _connectionMultiplexer.GetDatabase();
+            await db.StringSetAsync(key, JsonConvert.SerializeObject(value), ttl);
         }
     }
 }

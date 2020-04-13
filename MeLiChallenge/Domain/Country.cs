@@ -23,9 +23,9 @@ namespace MeLiChallenge.Domain
         public List<DateTime> CurrentDateTimes { get { return GetDateTimes(); } }
 
 
-        public int RelativeDistance
+        public int ReferenceDistance
         {
-            get { return GetRelativeDistance(); }
+            get { return GetReferenceDistance(); }
         }
 
         public Country(CountryData countryData)
@@ -57,7 +57,7 @@ namespace MeLiChallenge.Domain
                 Languages.Add(item.Name);
         }
 
-        private int GetRelativeDistance()
+        private int GetReferenceDistance()
         {
             var pin1 = new GeoCoordinate(Lat, Lng);
             var pin2 = new GeoCoordinate(_referenceLat, _referenceLng);
