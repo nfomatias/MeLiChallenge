@@ -22,5 +22,12 @@ namespace MeLiChallenge.Controllers
             var result = await _ipGuardService.GetCountry(ipaddress);
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _ipGuardService.GetStatistics();
+            return Ok(result);
+        }
     }
 }

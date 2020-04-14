@@ -28,6 +28,11 @@ namespace MeLiChallenge.Domain
             get { return GetReferenceDistance(); }
         }
 
+        public Country()
+        {
+
+        }
+
         public Country(CountryData countryData)
         {
             _timezones = countryData.Timezones;

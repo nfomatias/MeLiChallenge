@@ -18,8 +18,9 @@ namespace MeLiChallenge.Services
         IExchangeService _exchangeService;
         IReferenceCountryService _referenceCountryService;
         IConfiguration _configuration;
+        IStatisticService _statisticService;
 
-        public IPGuardService(ICacheService cacheService, IIPService ipService, ICountryService countryService, IExchangeService exchangeService, IReferenceCountryService referenceCountryService, IConfiguration configuration)
+        public IPGuardService(ICacheService cacheService, IIPService ipService, ICountryService countryService, IExchangeService exchangeService, IReferenceCountryService referenceCountryService, IConfiguration configuration, IStatisticService statisticService)
         {
             _cacheService = cacheService;
             _ipService = ipService;
@@ -27,23 +28,24 @@ namespace MeLiChallenge.Services
             _exchangeService = exchangeService;
             _referenceCountryService = referenceCountryService;
             _configuration = configuration;
+            _statisticService = statisticService;
         }
 
         public async Task<Country> GetCountry(string ipAddress)
         {
             var ipData = GetIpData(ipAddress);
-
             var countryData = GetCountryData(ipData);
-
             var exchangeData = GetExchangeData(countryData);
-
             var currency = new Currency(exchangeData, countryData, _configuration.GetValue<string>(key: SettingKeys.BaseCurrency));
-
             var referenceCountry = _referenceCountryService.GetReferenceCountry();
-
             var Country = new Country(countryData, currency, referenceCountry.Lat, referenceCountry.Lng);
-
+            _statisticService.Notify(Country);
             return Country;
+        }
+
+        public async Task<Statistics> GetStatistics()
+        {
+            return await _statisticService.GetStatistics();
         }
 
         private ExchangeData GetExchangeData(CountryData countryData)

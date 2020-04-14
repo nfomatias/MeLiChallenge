@@ -41,7 +41,7 @@ namespace MeLiChallenge
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IExchangeService, ExchangeService>();
             services.AddSingleton<IReferenceCountryService, ReferenceCountryService>();
-
+            services.AddTransient<IStatisticService, StatisticService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

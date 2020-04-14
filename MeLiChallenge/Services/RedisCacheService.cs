@@ -35,5 +35,11 @@ namespace MeLiChallenge.Services
             var db = _connectionMultiplexer.GetDatabase();
             await db.StringSetAsync(key, JsonConvert.SerializeObject(value), ttl);
         }
+
+        public async void Increment(string key)
+        {
+            var db = _connectionMultiplexer.GetDatabase();
+            await db.StringIncrementAsync(key);
+        }
     }
 }
