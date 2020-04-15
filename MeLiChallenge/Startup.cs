@@ -1,18 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml;
 using MeLiChallenge.Services;
 using MeLiChallenge.Services.Externals;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace MeLiChallenge
@@ -34,7 +26,7 @@ namespace MeLiChallenge
             services.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
-            string connectionString= Configuration.GetValue<string>(key: SettingKeys.RedisConnection ); //"redis:6379";
+            string connectionString = Configuration.GetValue<string>(key: SettingKeys.RedisConnection); //"redis:6379";
 
             services.AddSingleton<IConnectionMultiplexer>(x => ConnectionMultiplexer.Connect(connectionString));
 
@@ -67,7 +59,7 @@ namespace MeLiChallenge
                 endpoints.MapControllers();
             });
 
-            
+
         }
     }
 }

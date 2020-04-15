@@ -5,7 +5,7 @@ namespace MeLiChallenge.Domain
 {
     public class Currency
     {
-        private decimal _usdRate;
+        private readonly decimal _usdRate;
 
         public string Code { get; set; }
         public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace MeLiChallenge.Domain
             Symbol = countryData.Currencies.FirstOrDefault().Symbol;
 
 
-            if(exchangeData.Rates == null)
+            if (exchangeData.Rates == null)
                 _usdRate = 1; //En el único caso que debiera pasar esta situación es cuando el pais es USA
             else
                 exchangeData.Rates.TryGetValue(baseCurrencyCode, out _usdRate);

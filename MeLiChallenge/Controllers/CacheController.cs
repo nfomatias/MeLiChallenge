@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MeLiChallenge.Models;
+﻿using MeLiChallenge.Models;
 using MeLiChallenge.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Redis;
+using System.Collections.Generic;
 
 namespace apiNetCore.Controllers
 {

@@ -8,9 +8,9 @@ namespace MeLiChallenge.Domain
 {
     public class Country
     {
-        private double _referenceLat;
-        private double _referenceLng;
-        
+        private readonly double _referenceLat;
+        private readonly double _referenceLng;
+
         public string Code { get; private set; }
         public string Name { get; private set; }
         public double Lat { get; private set; }
@@ -40,7 +40,7 @@ namespace MeLiChallenge.Domain
             Code = countryData.Alpha2Code;
             var latlng = countryData.Latlng.ToList<double>();
             Lat = latlng[0];
-            Lng = latlng[1];   
+            Lng = latlng[1];
         }
 
         public Country(CountryData countryData, Currency currency, double referenceLat, double referenceLng)
@@ -67,9 +67,9 @@ namespace MeLiChallenge.Domain
             var pin1 = new GeoCoordinate(Lat, Lng);
             var pin2 = new GeoCoordinate(_referenceLat, _referenceLng);
 
-            return Convert.ToInt32(pin1.GetDistanceTo(pin2)/1000); //distancia en km
+            return Convert.ToInt32(pin1.GetDistanceTo(pin2) / 1000); //distancia en km
         }
-        
+
         private List<DateTime> GetDateTimes()
         {
             var retVal = new List<DateTime>();

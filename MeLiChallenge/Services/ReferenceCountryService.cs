@@ -16,7 +16,7 @@ namespace MeLiChallenge.Services
             _configuration = configuration;
             _countryService = countryService;
         }
-        
+
         public Country GetReferenceCountry()
         {
             if (_country == null)

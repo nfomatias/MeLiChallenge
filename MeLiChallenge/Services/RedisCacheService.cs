@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MeLiChallenge.Services
@@ -21,7 +19,7 @@ namespace MeLiChallenge.Services
             var db = _connectionMultiplexer.GetDatabase();
             var result = await db.StringGetAsync(key);
 
-            return result.IsNull? default : JsonConvert.DeserializeObject<T>(result.ToString());
+            return result.IsNull ? default : JsonConvert.DeserializeObject<T>(result.ToString());
         }
 
         public async Task SetCacheValueAsync<T>(string key, T value)

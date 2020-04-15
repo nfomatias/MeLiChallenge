@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MeLiChallenge.Models
+﻿namespace MeLiChallenge.Models
 {
     public class IPData
     {

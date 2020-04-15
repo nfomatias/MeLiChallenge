@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using MeLiChallenge.Services.Externals;
+﻿using MeLiChallenge.Services.Externals;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace MeLiChallenge.Controllers
 {
@@ -8,7 +8,7 @@ namespace MeLiChallenge.Controllers
     [ApiController]
     public class IPInfoController : ControllerBase
     {
-        private IIPGurardService _ipGuardService;
+        private readonly IIPGurardService _ipGuardService;
 
         public IPInfoController(IIPGurardService ipGuardService)
         {

@@ -8,23 +8,23 @@ namespace MeLiChallenge.Services
 {
     public class StatisticService : IStatisticService
     {
-        private ICacheService _cacheService;
-        private static string _farthestCountryKey = "FartestKey";
-        private static string _nearestCountryKey = "NearestKey";
+        private readonly ICacheService _cacheService;
+        private static readonly string _farthestCountryKey = "FartestKey";
+        private static readonly string _nearestCountryKey = "NearestKey";
 
         /// <summary>
         /// Distancia promedio sin división de la cantidad de requests
         /// </summary>
-        private static string _partialAverageDistanceKey = "partialAverage";
+        private static readonly string _partialAverageDistanceKey = "partialAverage";
         /// <summary>
         /// Contador de requests por pais. Ej: CountUS (contador USA), CountDE (contador alemania)
         /// </summary>
-        private static string _countryCountKey = "Count";
+        private static readonly string _countryCountKey = "Count";
 
         /// <summary>
         /// Contador de requests globales
         /// </summary>
-        private static string _requestsCountKey = "RequestsCount";
+        private static readonly string _requestsCountKey = "RequestsCount";
 
         public StatisticService(ICacheService cacheService)
         {

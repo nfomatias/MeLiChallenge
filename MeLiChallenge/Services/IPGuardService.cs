@@ -3,22 +3,20 @@ using MeLiChallenge.Models;
 using MeLiChallenge.Services.Externals;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MeLiChallenge.Services
 {
     public class IPGuardService : IIPGurardService
     {
-        ICacheService _cacheService;
-        IIPService _ipService;
-        ICountryService _countryService;
-        IExchangeService _exchangeService;
-        IReferenceCountryService _referenceCountryService;
-        IConfiguration _configuration;
-        IStatisticService _statisticService;
+        readonly ICacheService _cacheService;
+        readonly IIPService _ipService;
+        readonly ICountryService _countryService;
+        readonly IExchangeService _exchangeService;
+        readonly IReferenceCountryService _referenceCountryService;
+        readonly IConfiguration _configuration;
+        readonly IStatisticService _statisticService;
 
         public IPGuardService(ICacheService cacheService, IIPService ipService, ICountryService countryService, IExchangeService exchangeService, IReferenceCountryService referenceCountryService, IConfiguration configuration, IStatisticService statisticService)
         {
@@ -56,7 +54,7 @@ namespace MeLiChallenge.Services
 
             var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesExchange);
 
-            if(retVal == null)
+            if (retVal == null)
             {
                 retVal = _exchangeService.GetExchangeData(currencyCode).Result;
                 _cacheService.SetCacheValueAsync<ExchangeData>(currencyCode, retVal, new TimeSpan(0, ttl, 0));
@@ -71,7 +69,7 @@ namespace MeLiChallenge.Services
 
             var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesIP);
 
-            if(retVal == null)
+            if (retVal == null)
             {
                 retVal = _ipService.GetIpData(ipAddress).Result;
                 _cacheService.SetCacheValueAsync<IPData>(ipAddress, retVal, new TimeSpan(0, ttl, 0));
