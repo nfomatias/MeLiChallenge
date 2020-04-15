@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using MeLiChallenge.Services;
 using MeLiChallenge.Services.Externals;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,9 @@ namespace MeLiChallenge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddMvc()
+                .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             string connectionString= Configuration.GetValue<string>(key: SettingKeys.RedisConnection ); //"redis:6379";
 
