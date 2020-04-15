@@ -16,10 +16,6 @@ namespace MeLiChallenge.Services
         /// Distancia promedio sin división de la cantidad de requests
         /// </summary>
         private static readonly string _partialAverageDistanceKey = "partialAverage";
-        /// <summary>
-        /// Contador de requests por pais. Ej: CountUS (contador USA), CountDE (contador alemania)
-        /// </summary>
-        private static readonly string _countryCountKey = "Count";
 
         /// <summary>
         /// Contador de requests globales
@@ -89,29 +85,20 @@ namespace MeLiChallenge.Services
             }
         }
 
+        /// <summary>
+        /// Calcula y mantiene el estado de la distancia promedio de todas las ejecuciones
+        /// </summary>
+        /// <param name="country"></param>
         private void CalculateNewAverage(Country country)
         {
-            var countryCount = _cacheService.GetCacheValueAsync<ulong>(country.Code + _countryCountKey).Result;
+            /*
+             * Ejemplo del ejercicio:(2862 km * 10 + 10040 km* 5) / 15 = 5254 km
+             */
             var partialAverage = _cacheService.GetCacheValueAsync<ulong>(_partialAverageDistanceKey).Result;
 
-            var referenceDistance = Convert.ToUInt64(country.ReferenceDistance);
+            partialAverage += Convert.ToUInt64(country.ReferenceDistance);
 
-            if (countryCount == 0)
-            {
-                //Si es la 1ra vez, solo sumo la distancia
-                partialAverage += referenceDistance;
-            }
-            else
-            {
-                //si es la n vez, debo restar del average el valor anterior
-                partialAverage -= referenceDistance * countryCount;
-
-                //y sumo el nuevo valor
-                partialAverage += referenceDistance * (countryCount + 1);
-            }
-
-            _cacheService.SetCacheValueAsync<ulong>(country.Code + _countryCountKey, countryCount + 1);
-            _cacheService.SetCacheValueAsync<ulong>(_partialAverageDistanceKey, partialAverage);
+            _cacheService.SetCacheValueAsync(_partialAverageDistanceKey, partialAverage);
         }
     }
 }

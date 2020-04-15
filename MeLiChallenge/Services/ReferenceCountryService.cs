@@ -8,7 +8,6 @@ namespace MeLiChallenge.Services
     {
         private IConfiguration _configuration { get; }
         private ICountryService _countryService { get; }
-
         private Country _country { get; set; }
 
         public ReferenceCountryService(IConfiguration configuration, ICountryService countryService)

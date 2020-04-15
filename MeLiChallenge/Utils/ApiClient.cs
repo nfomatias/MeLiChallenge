@@ -25,7 +25,6 @@ namespace MeLiChallenge.Utils
         public async Task<T> GetAsync<T>(string uri, string queryString = "")
         {
             var requestUrl = CreateRequestUri(uri, queryString);
-
             return await GetAsync<T>(requestUrl);
         }
 
