@@ -58,8 +58,6 @@ namespace MeLiChallenge
             {
                 endpoints.MapControllers();
             });
-
-
         }
     }
 }
