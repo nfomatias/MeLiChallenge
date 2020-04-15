@@ -4,7 +4,6 @@ using MeLiChallenge.Services.Externals;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MeLiChallenge.Services
 {
@@ -29,21 +28,23 @@ namespace MeLiChallenge.Services
             _statisticService = statisticService;
         }
 
-        public async Task<Country> GetCountry(string ipAddress)
+        public Country GetCountry(string ipAddress)
         {
+            var referenceCountry = _referenceCountryService.GetReferenceCountry();
             var ipData = GetIpData(ipAddress);
             var countryData = GetCountryData(ipData);
             var exchangeData = GetExchangeData(countryData);
+
             var currency = new Currency(exchangeData, countryData, _configuration.GetValue<string>(key: SettingKeys.BaseCurrency));
-            var referenceCountry = _referenceCountryService.GetReferenceCountry();
+
             var Country = new Country(countryData, currency, referenceCountry.Lat, referenceCountry.Lng);
             _statisticService.Notify(Country);
             return Country;
         }
 
-        public async Task<Statistics> GetStatistics()
+        public Statistics GetStatistics()
         {
-            return await _statisticService.GetStatistics();
+            return _statisticService.GetStatistics();
         }
 
         private ExchangeData GetExchangeData(CountryData countryData)
@@ -57,7 +58,7 @@ namespace MeLiChallenge.Services
             if (retVal == null)
             {
                 retVal = _exchangeService.GetExchangeData(currencyCode).Result;
-                _cacheService.SetCacheValueAsync<ExchangeData>(currencyCode, retVal, new TimeSpan(0, ttl, 0));
+                _cacheService.SetCacheValueAsync(currencyCode, retVal, new TimeSpan(0, ttl, 0));
             }
 
             return retVal;
@@ -67,12 +68,11 @@ namespace MeLiChallenge.Services
         {
             var retVal = _cacheService.GetCacheValueAsync<IPData>(ipAddress).Result;
 
-            var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesIP);
-
             if (retVal == null)
             {
+                var ttl = _configuration.GetValue<int>(SettingKeys.TimeToLiveMinutesIP);
                 retVal = _ipService.GetIpData(ipAddress).Result;
-                _cacheService.SetCacheValueAsync<IPData>(ipAddress, retVal, new TimeSpan(0, ttl, 0));
+                _cacheService.SetCacheValueAsync(ipAddress, retVal, new TimeSpan(0, ttl, 0));
             }
 
             return retVal;

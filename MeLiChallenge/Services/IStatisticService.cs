@@ -1,5 +1,4 @@
 ﻿using MeLiChallenge.Domain;
-using System.Threading.Tasks;
 
 namespace MeLiChallenge.Services
 {
@@ -15,6 +14,6 @@ namespace MeLiChallenge.Services
         /// Obtiene las estadísticas
         /// </summary>
         /// <returns></returns>
-        Task<Statistics> GetStatistics();
+        Statistics GetStatistics();
     }
 }

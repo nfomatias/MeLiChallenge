@@ -20,7 +20,7 @@ namespace MeLiChallenge.Services
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        Task SetCacheValueAsync<T>(string key, T value);
+        Task<bool> SetCacheValueAsync<T>(string key, T value);
 
         /// <summary>
         /// Guarda una instancia con un tiempo de vida determinado
@@ -30,12 +30,12 @@ namespace MeLiChallenge.Services
         /// <param name="value"></param>
         /// <param name="ttl"></param>
         /// <returns></returns>
-        Task SetCacheValueAsync<T>(string key, T value, TimeSpan ttl);
+        Task<bool> SetCacheValueAsync<T>(string key, T value, TimeSpan ttl);
 
         /// <summary>
         /// Incrementa un counter
         /// </summary>
         /// <param name="key"></param>
-        void Increment(string key);
+        Task<long> IncrementAsync(string key);
     }
 }

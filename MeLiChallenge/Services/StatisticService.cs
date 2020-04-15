@@ -2,7 +2,6 @@
 using MeLiChallenge.Models;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MeLiChallenge.Services
 {
@@ -27,21 +26,21 @@ namespace MeLiChallenge.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Statistics> GetStatistics()
+        public Statistics GetStatistics()
         {
-            var farthestCountryCode = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_farthestCountryKey).Result.Key;
-            var nearestCountryCode = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_nearestCountryKey).Result.Key;
+            var farthestCountryTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_farthestCountryKey);
+            var nearestCountryTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_nearestCountryKey);
 
-            var farthestCountryData = await _cacheService.GetCacheValueAsync<CountryData>(farthestCountryCode);
-            var nearestCountryData = await _cacheService.GetCacheValueAsync<CountryData>(nearestCountryCode);
-            var requestsCount = await _cacheService.GetCacheValueAsync<int>(_requestsCountKey);
-            var partialAverage = await _cacheService.GetCacheValueAsync<int>(_partialAverageDistanceKey);
+            var requestsCountTask = _cacheService.GetCacheValueAsync<int>(_requestsCountKey);
+            var partialAverageTask = _cacheService.GetCacheValueAsync<int>(_partialAverageDistanceKey);
 
-            var avg = Convert.ToUInt32(partialAverage / requestsCount);
+            var farthestCountryDataTask = _cacheService.GetCacheValueAsync<CountryData>(farthestCountryTask.Result.Key);
+            var nearestCountryDataTask = _cacheService.GetCacheValueAsync<CountryData>(nearestCountryTask.Result.Key);
 
-            return new Statistics(new Country(farthestCountryData), new Country(nearestCountryData), avg);
+            var avg = Convert.ToUInt32(partialAverageTask.Result / requestsCountTask.Result);
+
+            return new Statistics(new Country(farthestCountryDataTask.Result), new Country(nearestCountryDataTask.Result), avg);
         }
-
 
         delegate bool CompareDelegate(int x, int y);
 
@@ -55,7 +54,7 @@ namespace MeLiChallenge.Services
             ProcessCountryDistance(country, lessOrEqualThan, _nearestCountryKey);
             ProcessCountryDistance(country, moreOrEqualThan, _farthestCountryKey);
 
-            _cacheService.Increment(_requestsCountKey);
+            _cacheService.IncrementAsync(_requestsCountKey);
         }
 
         /// <summary>
