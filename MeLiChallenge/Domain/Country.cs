@@ -88,11 +88,32 @@ namespace MeLiChallenge.Domain
                 if (item == "UTC")
                     timezone = "UTC+00:00"; //Fix: cuando un pais es UTC+00:00, en el valor viene "UTC"
 
-                var timeZoneInfo = TimeZoneInfo.GetSystemTimeZones().Where(x => x.DisplayName.Contains(timezone)).FirstOrDefault();
+                var hours = GetHours(timezone);
+                var minutes = GetMinutes(timezone);
 
-                retVal.Add(DateTime.UtcNow.AddMinutes(timeZoneInfo.BaseUtcOffset.Hours * 60 + timeZoneInfo.BaseUtcOffset.Minutes));
+                retVal.Add(DateTime.UtcNow.AddMinutes(hours * 60 + minutes));
             }
             return retVal;
+        }
+
+        private int GetMinutes(string timezone)
+        {
+            var positiveOrNegative = 1;
+
+            if (timezone.Substring(3, 1) == "-")
+                positiveOrNegative = -1;
+
+            return Convert.ToInt32(timezone.Substring(7, 2)) * positiveOrNegative;
+        }
+
+        private int GetHours(string timezone)
+        {
+            var positiveOrNegative = 1;
+
+            if (timezone.Substring(3, 1) == "-")
+                positiveOrNegative = -1;
+
+            return Convert.ToInt32(timezone.Substring(4, 2)) * positiveOrNegative;
         }
     }
 }
