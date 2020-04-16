@@ -1,19 +1,24 @@
-# Modo de uso
+# Install instruction
+docker build -t melichallenge .
 
-## LLamadas a api con ingreso de ip
-curl http://localhost/api/ipinfo/5.6.7.8 -UseBasicParsing -o result.json
+# Run command
+docker-compose up
+
+# Usage modes
+
+## Api calls with ip address
 
 ### IP BR 
-curl http://localhost/api/ipinfo/179.183.250.219 -UseBasicParsing -o resultBR.json
+curl http://localhost:8080/api/ipinfo/179.183.250.219 -UseBasicParsing
 
 ### IP ES 
-curl http://localhost/api/ipinfo/213.192.202.121 -UseBasicParsing -o resultES.json
+curl http://localhost:8080/api/ipinfo/213.192.202.121 -UseBasicParsing
 
 ### IP UY 
-curl http://localhost/api/ipinfo/200.40.96.160 -UseBasicParsing -o resultUY.json
+curl http://localhost:8080/api/ipinfo/200.40.96.160 -UseBasicParsing
 
 ### IP USA 
-curl http://localhost/api/ipinfo/72.229.28.185 -UseBasicParsing -o resultUSA.json
+curl http://localhost:8080/api/ipinfo/72.229.28.185 -UseBasicParsing
 
-## LLamadas a api de estadisticas
-curl http://localhost/api/ipinfo/ -UseBasicParsing -o statistics.json
+## Statistic api call
+curl http://localhost:8080/api/ipinfo/ -UseBasicParsing

@@ -3,10 +3,9 @@ services:
     redis:
         image: redis:latest
     melichalenge:
-        image: nfomatias/melichallenge
+        image: melichallenge
         ports:
-            - 32771:80/tcp
-            - 32770:443/tcp
-            - 80:80
+            - 8080:80/tcp
+            - 8081:443/tcp
         depends_on:
         - redis
