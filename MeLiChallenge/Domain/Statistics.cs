@@ -6,10 +6,9 @@ namespace MeLiChallenge.Domain
     {
         public Country FarthestCountry { get; set; }
         public Country NearestCountry { get; set; }
+        public ulong AverageDistance { get; set; }
 
-        public UInt32 AverageDistance { get; set; }
-
-        public Statistics(Country farthest, Country nearest, UInt32 average)
+        public Statistics(Country farthest, Country nearest, ulong average)
         {
             FarthestCountry = farthest;
             NearestCountry = nearest;

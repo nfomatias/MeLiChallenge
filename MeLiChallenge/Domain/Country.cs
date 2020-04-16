@@ -22,10 +22,23 @@ namespace MeLiChallenge.Domain
 
         public List<DateTime> CurrentDateTimes { get { return GetDateTimes(); } }
 
+        public static Country Default
+        {
+            get
+            {
+                return new Country();
+            }
+        }
+
 
         public int ReferenceDistance
         {
             get { return GetReferenceDistance(); }
+        }
+
+        private Country()
+        {
+
         }
 
         public Country(CountryData countryData)
@@ -68,6 +81,9 @@ namespace MeLiChallenge.Domain
         private List<DateTime> GetDateTimes()
         {
             var retVal = new List<DateTime>();
+
+            if (_timezones == null)
+                return retVal;
 
             foreach (var item in _timezones)
             {

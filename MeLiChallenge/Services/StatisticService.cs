@@ -28,18 +28,33 @@ namespace MeLiChallenge.Services
 
         public Statistics GetStatistics()
         {
-            var farthestCountryTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_farthestCountryKey);
-            var nearestCountryTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_nearestCountryKey);
+            var farthestCountryKeyTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_farthestCountryKey);
+            var nearestCountryKeyTask = _cacheService.GetCacheValueAsync<KeyValuePair<string, int>>(_nearestCountryKey);
 
             var requestsCountTask = _cacheService.GetCacheValueAsync<int>(_requestsCountKey);
             var partialAverageTask = _cacheService.GetCacheValueAsync<int>(_partialAverageDistanceKey);
 
-            var farthestCountryDataTask = _cacheService.GetCacheValueAsync<CountryData>(farthestCountryTask.Result.Key);
-            var nearestCountryDataTask = _cacheService.GetCacheValueAsync<CountryData>(nearestCountryTask.Result.Key);
+            CountryData farthestCountryData = null;
+            CountryData nearestCountryData = null;
 
-            var avg = Convert.ToUInt32(partialAverageTask.Result / requestsCountTask.Result);
+            if (!farthestCountryKeyTask.Result.Equals(default(KeyValuePair<string, int>)))
+                farthestCountryData = _cacheService.GetCacheValueAsync<CountryData>(farthestCountryKeyTask.Result.Key).Result;
 
-            return new Statistics(new Country(farthestCountryDataTask.Result), new Country(nearestCountryDataTask.Result), avg);
+            if (!nearestCountryKeyTask.Result.Equals(default(KeyValuePair<string, int>)))
+                nearestCountryData = _cacheService.GetCacheValueAsync<CountryData>(nearestCountryKeyTask.Result.Key).Result;
+
+            ulong avg = 0;
+            
+            if(requestsCountTask.Result != 0)
+                avg = Convert.ToUInt32(partialAverageTask.Result / requestsCountTask.Result);
+
+            return new Statistics(
+                farthestCountryData != null ?
+                    new Country(farthestCountryData) : Country.Default,
+
+                nearestCountryData != null ?
+                    new Country(nearestCountryData) : Country.Default
+                    , avg);
         }
 
         delegate bool CompareDelegate(int x, int y);
