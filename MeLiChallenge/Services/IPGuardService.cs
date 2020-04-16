@@ -78,7 +78,6 @@ namespace MeLiChallenge.Services
                 _logger.LogInformation("ExchangeService call finished.");
                 _cacheService.SetCacheValueAsync(currencyCode, retVal, new TimeSpan(0, ttl, 0));
             }
-
             return retVal;
         }
 
@@ -97,7 +96,6 @@ namespace MeLiChallenge.Services
                 _logger.LogInformation("IpService call finished.");
                 _cacheService.SetCacheValueAsync(ipAddress, retVal, new TimeSpan(0, ttl, 0));
             }
-
             return retVal;
         }
 
@@ -114,7 +112,6 @@ namespace MeLiChallenge.Services
                 _logger.LogInformation("CountryService call finished.");
                 _cacheService.SetCacheValueAsync(ipData.CountryCode, retVal);
             }
-
             return retVal;
         }
     }

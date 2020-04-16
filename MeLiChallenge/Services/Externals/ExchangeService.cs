@@ -31,6 +31,5 @@ namespace MeLiChallenge.Services.Externals
 
             return await apiClient.GetAsync<ExchangeData>(uri);
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MeLiChallenge.Domain
+﻿namespace MeLiChallenge.Domain
 {
     public class Statistics
     {

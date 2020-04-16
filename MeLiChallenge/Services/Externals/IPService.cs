@@ -12,7 +12,6 @@ namespace MeLiChallenge.Services.Externals
             var apiClient = new ApiClient();
 
             return await apiClient.GetAsync<IPData>(uri, ipaddress);
-
         }
     }
 }

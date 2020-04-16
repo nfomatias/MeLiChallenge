@@ -18,12 +18,10 @@ namespace MeLiChallenge.Domain
             Name = countryData.Currencies.FirstOrDefault().Name;
             Symbol = countryData.Currencies.FirstOrDefault().Symbol;
 
-
             if (exchangeData.Rates == null)
                 _usdRate = 1; //En el único caso que debiera pasar esta situación es cuando el pais es USA
             else
                 exchangeData.Rates.TryGetValue(baseCurrencyCode, out _usdRate);
-
         }
 
         private decimal GetRate()

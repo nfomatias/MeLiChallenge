@@ -44,8 +44,8 @@ namespace MeLiChallenge.Services
                 nearestCountryData = _cacheService.GetCacheValueAsync<CountryData>(nearestCountryKeyTask.Result.Key).Result;
 
             ulong avg = 0;
-            
-            if(requestsCountTask.Result != 0)
+
+            if (requestsCountTask.Result != 0)
                 avg = Convert.ToUInt32(partialAverageTask.Result / requestsCountTask.Result);
 
             return new Statistics(

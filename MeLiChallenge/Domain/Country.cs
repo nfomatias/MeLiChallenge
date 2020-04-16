@@ -17,9 +17,7 @@ namespace MeLiChallenge.Domain
         public double Lng { get; private set; }
         private IEnumerable<string> _timezones { get; set; }
         public Currency Currency { get; set; }
-
         public List<string> Languages { get; set; }
-
         public List<DateTime> CurrentDateTimes { get { return GetDateTimes(); } }
 
         public static Country Default
@@ -29,7 +27,6 @@ namespace MeLiChallenge.Domain
                 return new Country();
             }
         }
-
 
         public int ReferenceDistance
         {
@@ -95,7 +92,6 @@ namespace MeLiChallenge.Domain
 
                 retVal.Add(DateTime.UtcNow.AddMinutes(timeZoneInfo.BaseUtcOffset.Hours * 60 + timeZoneInfo.BaseUtcOffset.Minutes));
             }
-
             return retVal;
         }
     }
